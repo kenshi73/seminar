@@ -8,7 +8,7 @@ index.html          セミナー一覧（seminars.json から自動で並ぶ）
 seminars.json       一覧に載せるセミナーの情報
 assets/style.css    全ページ共通の見た目
 _template/          新しいセミナー用のひな形
-2026-gimap/         セミナー1回分のページ（フォルダ名がURLになる）
+2027-gimap/         セミナー1回分のページ（フォルダ名がURLになる）
 ```
 
 公開URL: `https://kenshi73.github.io/seminar/`
