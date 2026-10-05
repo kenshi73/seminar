@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>患者さん向けセミナー</title>
+<meta name="description" content="患者さん向けセミナーのご案内です。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">セミナーのご案内</span>
+    <h1>患者さん向けセミナー</h1>
+    <p class="sub">よくいただくご質問をテーマに、医師がわかりやすくお話しします。</p>
+  </div>
+</header>
+<main class="wrap">
+  <section>
+    <h2>受付中・開催予定</h2>
+    <ul class="list" id="upcoming"><li class="empty">現在、受付中のセミナーはありません。</li></ul>
+  </section>
+  <section>
+    <h2>終了したセミナー</h2>
+    <ul class="list" id="past"><li class="empty">まだありません。</li></ul>
+  </section>
+  <section>
+    <h2>ご注意</h2>
+    <ul class="notes">
+      <li>セミナーの中では、個別の症状の診断や治療方針についてはお答えできません。</li>
+      <li>当院の診療・検査は自由診療（保険適用外）です。効果や経過には個人差があります。</li>
+    </ul>
+  </section>
+</main>
+<footer><div class="wrap"><span class="todo">【院名・お問い合わせ先】</span></div></footer>
+<script>
+// seminars.json の status: "open"（受付中）/"closed"（終了）だけ載せる。"draft" は載せない。
+fetch('seminars.json',{cache:'no-cache'}).then(r=>r.json()).then(list=>{
+  const show=list.filter(s=>s.status==='open'||s.status==='closed')
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const render=(id,items)=>{
+    if(!items.length)return;
+    const ul=document.getElementById(id);ul.textContent='';
+    for(const s of items){
+      const li=document.createElement('li');const a=document.createElement('a');
+      a.className='card';a.href=s.slug+'/';
+      const d=document.createElement('div');d.className='date';d.textContent=s.dateLabel||s.date||'';
+      const b=document.createElement('span');b.className='badge'+(s.status==='closed'?' closed':'');
+      b.textContent=s.status==='closed'?'終了':'受付中';d.append(b);
+      const t=document.createElement('div');t.className='ttl';t.textContent=s.title;
+      const sub=document.createElement('div');sub.className='sub2';sub.textContent=s.subtitle||'';
+      a.append(d,t,sub);li.append(a);ul.append(li);
+    }
+  };
+  render('upcoming',show.filter(s=>s.status==='open').reverse());
+  render('past',show.filter(s=>s.status==='closed'));
+}).catch(()=>{});
+</script>
+</body>
+</html>
